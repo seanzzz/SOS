@@ -1,6 +1,7 @@
-#include "common.h"
+#include "string.h"
+// #include "asmutil.h"
 #include "descriptor_tables.h"
-#include "timer.h"
+#include "time.h"
 
 void countNumbers() {
   short* vram = (short *)0xb8000;

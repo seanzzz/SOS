@@ -4,17 +4,18 @@
 // Rewritten for JamesM's kernel development tutorials.
 //
 
-#include "common.h"
+#include "string.h"
+#include "asmutil.h"
 #include "isr.h"
 
 isr_t interrupt_handlers[256];
 
-void register_interrupt_handler(u8int n, isr_t handler)
+void register_interrupt_handler(uint8_t n, isr_t handler)
 {
   interrupt_handlers[n] = handler;
 }
 
-u8int tick;
+uint8_t tick;
 
 // This gets called from our ASM interrupt handler stub.
 void isr_handler(registers_t regs)
@@ -34,22 +35,22 @@ void isr_handler(registers_t regs)
 void irq_handler(registers_t regs)
 {
 	short* vram = (short *)0xb8000;
-    char* msg = "yo!";
+  char* msg = "yo!";
 
-    vram[0] = msg[0] | '[' << 8;
-   // Send an EOI (end of interrupt) signal to the PICs.
-   // If this interrupt involved the slave.
-   if (regs.int_no >= 40)
-   {
-       // Send reset signal to slave.
-       outb(0xA0, 0x20);
-   }
-   // Send reset signal to master. (As well as slave, if necessary).
-   outb(0x20, 0x20);
+  vram[0] = msg[0] | '[' << 8;
+  // Send an EOI (end of interrupt) signal to the PICs.
+  // If this interrupt involved the slave.
+  if (regs.int_no >= 40)
+  {
+    // Send reset signal to slave.
+    outb(0xA0, 0x20);
+  }
+  // Send reset signal to master. (As well as slave, if necessary).
+  outb(0x20, 0x20);
 
-   if (interrupt_handlers[regs.int_no] != 0)
-   {
-       isr_t handler = interrupt_handlers[regs.int_no];
-       handler(regs);
-   }
+  if (interrupt_handlers[regs.int_no] != 0)
+  {
+    isr_t handler = interrupt_handlers[regs.int_no];
+    handler(regs);
+  }
 }
