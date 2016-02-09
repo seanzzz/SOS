@@ -22,4 +22,6 @@ void kmain(void) {
   welcome();
   init_timer(10);
   __asm__ __volatile__ ("sti");
+
+  // begin user process here...
 }
