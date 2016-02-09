@@ -3,6 +3,11 @@
 
 #include <stdint.h>
 
+void decrement_cursor_y(void);
+void decrement_cursor_x(void);
+void increment_cursor_y(void);
+void increment_cursor_x(void);
+void move_cursor(void);
 void screen_clear(void);
 void screen_set_char_attr(uint8_t a);
 void screen_set_cursor_loc(uint8_t row, uint8_t col);

@@ -93,22 +93,42 @@ void keyboard_callback(registers_t regs) {
   scancode = inb(0x60);
 
   if (scancode & 0x80) {
-    // just released
+    
     if (scancode == 0xAA || scancode == 0xB6) {
-      // screen_putc(scancode);
+      // shift released
       shift = 0;
     }
   } else if (scancode == 0x2A || scancode == 0x36) {
-    // screen_putc(scancode);
+    // shift pressed but yet released
     shift = 1;
   } else {
     // screen_putc(scancode);
-
-    if (shift) {
-      screen_putc(kbdus_shift[scancode]);
-    } else {
-      screen_putc(kbdus[scancode]);
+    switch(scancode) {
+      case 0x48:
+        decrement_cursor_y();
+        move_cursor();
+        break;
+      case 0x50:
+        increment_cursor_y();
+        move_cursor();
+        break;
+      case 0x4B:
+        decrement_cursor_x();
+        move_cursor();
+        break;
+      case 0x4D:
+        increment_cursor_x();
+        move_cursor();
+        break;
+      default:
+        if (shift) {
+          screen_putc(kbdus_shift[scancode]);
+        } else {
+          screen_putc(kbdus[scancode]);
+        }
+      break;
     }
+
 
     // keyhold
   }
