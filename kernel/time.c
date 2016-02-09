@@ -5,12 +5,14 @@
 #include "isr.h"
 #include "screen.h"
 
-uint32_t tick = 0;
+int tick = -100;
 
 static void timer_callback(registers_t regs)
 {
   tick++;
-  // screen_putc('a');
+  // char* t = "Time tick" ;
+  // screen_puts(t);
+  // screen_putx(tick);
   // short* vram = (short *)0xb8000;
   // char* msg = "yo!";
 

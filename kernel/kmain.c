@@ -5,39 +5,21 @@
 #include "screen.h"
 #include "keyboard.h"
 
-void count_numbers() {
+void welcome() {
   
-  screen_clear();
-  screen_set_char_attr(0x07);
   char* welcome_msg = "Hello! Welcome to SOS, Sean's Operating System.";
-  // char* counter = "0000000000";
   screen_puts(welcome_msg);
+  screen_putx(256);
 
-  // for (int i = 9; i >= 0; i--)
-  //   vram[i+80] = counter[i] | '[' << 8;  
-
-  // while (1) {
-  // counter[9]++;
-  
-  //   for (int i = 9; i >= 0; i--) {
-  //     if (counter[i] == 0x3a) {
-  //       // update screen
-  //       counter[i] = 0x30;
-  //       vram[i+80] = counter[i] | '[' << 8;  
-        
-  //       counter[i-1]++; // add to next
-  //       vram[i+80-1] = counter[i-1] | '[' << 8;  
-  //     } else {
-  //       break;
-  //     }
-  //   }
-  // }
 }
 void kmain(void) {
   init_descriptor_tables();
-  init_timer(50);
+  init_timer(10);
   init_keyboard(0);
+  screen_clear();
+  screen_set_char_attr(0x07);
+
   __asm__ __volatile__ ("sti");
 
-  count_numbers();
+  welcome();
 }
