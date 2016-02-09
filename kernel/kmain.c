@@ -24,5 +24,5 @@ void kmain(void) {
   __asm__ __volatile__ ("sti");
 
   // begin user process here...
-  while (1 == 1) {}
+  while (1 == 0) {}
 }
