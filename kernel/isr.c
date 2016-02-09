@@ -7,6 +7,7 @@
 #include "string.h"
 #include "asmutil.h"
 #include "isr.h"
+#include "screen.h"
 
 isr_t interrupt_handlers[256];
 
@@ -15,29 +16,20 @@ void register_interrupt_handler(uint8_t n, isr_t handler)
   interrupt_handlers[n] = handler;
 }
 
-uint8_t tick;
 
 // This gets called from our ASM interrupt handler stub.
 void isr_handler(registers_t regs)
 {
-	tick++;
-    short* vram = (short *)0xb8000;
-    char* msg = "yo!";
 
-    vram[tick] = msg[0] | '[' << 8;
-
-    // monitor_write("recieved interrupt: ");
-   // monitor_write_dec(regs.int_no);
-   // monitor_put('\n');
+  // screen_puts("recieved interrupt: ");
+  // screen_put_dec(regs.int_no);
+  // screen_putc('\n');
 }
 
 // This gets called from our ASM interrupt handler stub.
 void irq_handler(registers_t regs)
 {
-	short* vram = (short *)0xb8000;
-  char* msg = "yo!";
 
-  vram[0] = msg[0] | '[' << 8;
   // Send an EOI (end of interrupt) signal to the PICs.
   // If this interrupt involved the slave.
   if (regs.int_no >= 40)

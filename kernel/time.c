@@ -3,17 +3,18 @@
 
 #include "time.h"
 #include "isr.h"
-// #include "monitor.h"
+#include "screen.h"
 
 uint32_t tick = 0;
 
 static void timer_callback(registers_t regs)
 {
   tick++;
-  short* vram = (short *)0xb8000;
-  char* msg = "yo!";
+  // screen_putc('a');
+  // short* vram = (short *)0xb8000;
+  // char* msg = "yo!";
 
-  vram[tick] = msg[0] | '[' << 8;
+  // vram[tick] = msg[0] | '[' << 8;
 }
 
 void init_timer(uint32_t frequency)
