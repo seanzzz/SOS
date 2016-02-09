@@ -10,9 +10,10 @@ int tick = -100;
 static void timer_callback(registers_t regs)
 {
   tick++;
-  // char* t = "Time tick" ;
-  // screen_puts(t);
-  // screen_putx(tick);
+  char* t = "Time tick: " ;
+  screen_puts(t);
+  screen_putd(tick);
+  screen_putc('\n');
   // short* vram = (short *)0xb8000;
   // char* msg = "yo!";
 

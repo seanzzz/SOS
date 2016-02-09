@@ -41,7 +41,7 @@ static unsigned char kbdus[128] = // from Bran's tutorial; TO-DO: update keys
     0,	/* All other keys are undefined */
 };		
 
-static unsigned char kbdus_shift[128] = // from Bran's tutorial; TO-DO: update keys
+static unsigned char kbdus_shift[128] = // keys with shift
 {
     0,  27, '!', '@', '#', '$', '%', '^', '&', '*', /* 9 */
   '(', ')', '_', '+', '\b', /* Backspace */
@@ -92,7 +92,7 @@ void keyboard_callback(registers_t regs) {
   /* Read from the keyboard's data buffer */
   scancode = inb(0x60);
 
-  if (scancode & 0x80) {
+  if (scancode & 0x80) { // a key is released
     
     if (scancode == 0xAA || scancode == 0xB6) {
       // shift released
@@ -126,11 +126,8 @@ void keyboard_callback(registers_t regs) {
         } else {
           screen_putc(kbdus[scancode]);
         }
-      break;
+        break;
     }
-
-
-    // keyhold
   }
 
 }

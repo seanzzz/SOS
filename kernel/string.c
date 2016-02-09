@@ -15,7 +15,6 @@ void * memsetw(void *dest, int val, uint32_t len)
   for ( ; len != 0; len--) *temp++ = val;
 }
 
-
 void * memcpy(void *dest, const void *src, uint32_t len) {
 	const uint8_t * sr = (const void *)src;
 	uint8_t *temp = (uint8_t *)dest;

@@ -7,19 +7,19 @@
 
 void welcome() {
   
-  char* welcome_msg = "Hello! Welcome to SOS, Sean's Operating System.";
+  char* welcome_msg = "Hello! Welcome to SOS, Sean's Operating System.\n";
   screen_puts(welcome_msg);
+  screen_puts("This is a hex number:");
   screen_putx(256);
+  screen_putc('\n');
 
 }
 void kmain(void) {
   init_descriptor_tables();
-  init_timer(10);
   init_keyboard(0);
   screen_clear();
   screen_set_char_attr(0x07);
-
-  __asm__ __volatile__ ("sti");
-
   welcome();
+  init_timer(10);
+  __asm__ __volatile__ ("sti");
 }
