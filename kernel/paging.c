@@ -2,6 +2,7 @@
 
 #include "paging.h"
 #include "stdlib.h"
+#include "string.h"
 
 // The kernel's page directory
 page_directory_t *kernel_directory=0;
@@ -13,7 +14,7 @@ page_directory_t *current_directory=0;
 uint32_t *frames;
 uint32_t nframes;
 
-// Defined in kheap.c
+// Defined in stdlib.c
 extern uint32_t placement_address;
 
 // Macros used in the bitset algorithms.
@@ -112,11 +113,11 @@ void initialise_paging()
     uint32_t mem_end_page = 0x1000000;
     
     nframes = mem_end_page / 0x1000;
-    frames = (uint32_t*)kmalloc(INDEX_FROM_BIT(nframes));
+    frames = (uint32_t*)malloc(INDEX_FROM_BIT(nframes));
     memset(frames, 0, INDEX_FROM_BIT(nframes));
     
     // Let's make a page directory.
-    kernel_directory = (page_directory_t*)kmalloc_a(sizeof(page_directory_t));
+    kernel_directory = (page_directory_t*)malloc_a(sizeof(page_directory_t));
     current_directory = kernel_directory;
 
     // We need to identity map (phys addr = virt addr) from
@@ -124,7 +125,7 @@ void initialise_paging()
     // transparently, as if paging wasn't enabled.
     // NOTE that we use a while loop here deliberately.
     // inside the loop body we actually change placement_address
-    // by calling kmalloc(). A while loop causes this to be
+    // by calling malloc(). A while loop causes this to be
     // computed on-the-fly rather than once at the start.
     int i = 0;
     while (i < placement_address)
@@ -179,7 +180,7 @@ void page_fault(registers_t regs)
     // A page fault has occurred.
     // The faulting address is stored in the CR2 register.
     uint32_t faulting_address;
-    asm volatile("mov %%cr2, %0" : "=r" (faulting_address));
+    __asm__ __volatile__("mov %%cr2, %0" : "=r" (faulting_address));
     
     // The error code gives us details of what happened.
     int present   = !(regs.err_code & 0x1); // Page not present
@@ -189,13 +190,12 @@ void page_fault(registers_t regs)
     int id = regs.err_code & 0x10;          // Caused by an instruction fetch?
 
     // Output an error message.
-    monitor_write("Page fault! ( ");
-    if (present) {monitor_write("present ");}
-    if (rw) {monitor_write("read-only ");}
-    if (us) {monitor_write("user-mode ");}
-    if (reserved) {monitor_write("reserved ");}
-    monitor_write(") at 0x");
-    monitor_write_hex(faulting_address);
-    monitor_write("\n");
-    PANIC("Page fault");
+    screen_puts("Page fault! ");
+    if (present) {screen_puts("present ");}
+    if (rw) {screen_puts("read-only ");}
+    if (us) {screen_puts("user-mode ");}
+    if (reserved) {screen_puts("reserved ");}
+    screen_puts(") at 0x");
+    screen_putx(faulting_address);
+    screen_puts("\n");
 }

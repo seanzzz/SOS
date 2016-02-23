@@ -24,6 +24,16 @@ uint32_t malloc_int(uint32_t sz, int align, uint32_t *phys)
     return tmp;
 }
 
+uint32_t malloc_a(uint32_t sz)
+{
+    return malloc_int(sz, 1, 0);
+}
+
+uint32_t malloc_ap(uint32_t sz, uint32_t *phys)
+{
+    return malloc_int(sz, 1, phys);
+}
+
 uint32_t malloc(uint32_t sz)
 {
     return malloc_int(sz, 0, 0);

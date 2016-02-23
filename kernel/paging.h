@@ -1,10 +1,10 @@
-// TO-DO: refine it
+// TO-DO: 
 
 #ifndef PAGING_H
 #define PAGING_H
 
 #include <stdint.h>
-// #include "common.h"
+#include "screen.h"
 #include "isr.h"
 
 typedef struct page

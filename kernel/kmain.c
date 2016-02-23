@@ -4,6 +4,7 @@
 #include "time.h"
 #include "screen.h"
 #include "keyboard.h"
+#include "paging.h"
 
 void welcome() {
   
@@ -18,9 +19,11 @@ void kmain(void) {
   init_descriptor_tables();
   init_keyboard(0);
   screen_clear();
+
+  // initialise_paging();
   screen_set_char_attr(0x07);
   welcome();
-  init_timer(10);
+  // init_timer(10);
   __asm__ __volatile__ ("sti");
 
   // begin user process here...
